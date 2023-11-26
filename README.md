@@ -1,4 +1,4 @@
-# DIO module Readme
+# DIO Module Readme
 
 This readme file provides an overview and usage instructions for the DIO (Digital Input/Output) module. The DIO module consists of three files: `DIO.h`, `DIO.c`, and `App`. Additionally, the DIO module relies on two supporting files: `bitmath.h` and `std-types.h`. Below, you will find information about each file, including its purpose and the functions it contains.
 

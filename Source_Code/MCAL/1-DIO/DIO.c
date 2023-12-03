@@ -2,11 +2,12 @@
  * DIO.C
  *
  *  Created on: Nov 25, 2023
- *      Author: DELL
+ *      Author: Mayada Metwally
  */
 #include"../../LIB/STD_TYPES.h"
 #include"../../LIB/Bit_Math.h"
 #include"DIO.h"
+#include"PORT_Config.h"
 
 u8 DIO_u8SetPinDirection(u8 Copy_u8Port , u8 Copy_u8Pin , u8 Copy_u8PinDirection)
 {
@@ -15,12 +16,20 @@ u8 DIO_u8SetPinDirection(u8 Copy_u8Port , u8 Copy_u8Pin , u8 Copy_u8PinDirection
 	{
 		if(Copy_u8PinDirection == DIO_u8PIN_INPUT)
 		{
+
+
 			switch(Copy_u8Port)
 			{
+#if (NUMBER_OF_PORT == TWO_PORT) || (NUMBER_OF_PORT == THREE_PORT) || (NUMBER_OF_PORT == FOUR_PORT)
 			case DIO_u8PORTA : CLR_BIT(DDRA,Copy_u8Pin); break;
 			case DIO_u8PORTB : CLR_BIT(DDRB,Copy_u8Pin); break;
+#endif
+#if (NUMBER_OF_PORT == THREE_PORT) || (NUMBER_OF_PORT == FOUR_PORT)
 			case DIO_u8PORTC : CLR_BIT(DDRC,Copy_u8Pin); break;
+#endif
+#if (NUMBER_OF_PORT == FOUR_PORT)
 			case DIO_u8PORTD : CLR_BIT(DDRD,Copy_u8Pin); break;
+#endif
 			default : Local_u8ErrorState=1 ;             break;
 
 			}
@@ -29,11 +38,17 @@ u8 DIO_u8SetPinDirection(u8 Copy_u8Port , u8 Copy_u8Pin , u8 Copy_u8PinDirection
 		{
 			switch (Copy_u8Port)
 			{
-			  case DIO_u8PORTA : SET_BIT(DDRA,Copy_u8Pin); break;
-			  case DIO_u8PORTB : SET_BIT(DDRB,Copy_u8Pin); break;
-			  case DIO_u8PORTC : SET_BIT(DDRC,Copy_u8Pin); break;
-			  case DIO_u8PORTD : SET_BIT(DDRD,Copy_u8Pin); break;
-			  default : Local_u8ErrorState=1 ;             break;
+#if (NUMBER_OF_PORT == TWO_PORT) || (NUMBER_OF_PORT == THREE_PORT) || (NUMBER_OF_PORT == FOUR_PORT)
+			case DIO_u8PORTA : SET_BIT(DDRA,Copy_u8Pin); break;
+			case DIO_u8PORTB : SET_BIT(DDRB,Copy_u8Pin); break;
+#endif
+#if (NUMBER_OF_PORT == THREE_PORT) || (NUMBER_OF_PORT == FOUR_PORT)
+			case DIO_u8PORTC : SET_BIT(DDRC,Copy_u8Pin); break;
+#endif
+#if (NUMBER_OF_PORT == FOUR_PORT)
+			case DIO_u8PORTD : SET_BIT(DDRD,Copy_u8Pin); break;
+#endif
+			default : Local_u8ErrorState=1 ;             break;
 			}
 
 
@@ -55,16 +70,22 @@ u8 DIO_u8SetPortDirection(u8 Copy_u8Port  , u8 Copy_u8PortDirection)
 {
 	u8 Local_u8ErrorState=0;
 
-		switch(Copy_u8Port)
-		{
-		case DIO_u8PORTA : DDRA=Copy_u8PortDirection; break;
-		case DIO_u8PORTB : DDRB=Copy_u8PortDirection; break;
-		case DIO_u8PORTC : DDRC=Copy_u8PortDirection; break;
-		case DIO_u8PORTD : DDRD=Copy_u8PortDirection; break;
-		default : Local_u8ErrorState=1;               break;
+	switch(Copy_u8Port)
+	{
+#if NUMBER_OF_PORT == TWO_PORT || NUMBER_OF_PORT == THREE_PORT || NUMBER_OF_PORT == FOUR_PORT
+	case DIO_u8PORTA : DDRA=Copy_u8PortDirection; break;
+	case DIO_u8PORTB : DDRB=Copy_u8PortDirection; break;
+#endif
+#if NUMBER_OF_PORT == THREE_PORT || NUMBER_OF_PORT == FOUR_PORT
+	case DIO_u8PORTC : DDRC=Copy_u8PortDirection; break;
+#endif
+#if NUMBER_OF_PORT == FOUR_PORT
+	case DIO_u8PORTD : DDRD=Copy_u8PortDirection; break;
+#endif
+	default : Local_u8ErrorState=1;               break;
 
-		}
-		return Local_u8ErrorState;
+	}
+	return Local_u8ErrorState;
 }
 
 u8 DIO_u8SetPinValue(u8 Copy_u8Port , u8 Copy_u8Pin , u8 Copy_u8PinValue)
@@ -76,10 +97,19 @@ u8 DIO_u8SetPinValue(u8 Copy_u8Port , u8 Copy_u8Pin , u8 Copy_u8PinValue)
 		{
 			switch(Copy_u8Port)
 			{
+#if NUMBER_OF_PORT == TWO_PORT || NUMBER_OF_PORT == THREE_PORT || NUMBER_OF_PORT == FOUR_PORT
 			case DIO_u8PORTA : CLR_BIT(PORTA,Copy_u8Pin);  break;
 			case DIO_u8PORTB : CLR_BIT(PORTB,Copy_u8Pin);  break;
+#endif
+#if NUMBER_OF_PORT == THREE_PORT || NUMBER_OF_PORT == FOUR_PORT
 			case DIO_u8PORTC : CLR_BIT(PORTC,Copy_u8Pin);  break;
+#endif
+#if NUMBER_OF_PORT == FOUR_PORT
 			case DIO_u8PORTD : CLR_BIT(PORTD,Copy_u8Pin);  break;
+#endif
+#if NUMBER_OF_PORT == SiX_PORT
+
+#endif
 			default : Local_u8ErrorState=1;                break;
 
 			}
@@ -89,10 +119,16 @@ u8 DIO_u8SetPinValue(u8 Copy_u8Port , u8 Copy_u8Pin , u8 Copy_u8PinValue)
 		{
 			switch(Copy_u8Port)
 			{
+#if NUMBER_OF_PORT == TWO_PORT || NUMBER_OF_PORT == THREE_PORT || NUMBER_OF_PORT == FOUR_PORT
 			case DIO_u8PORTA : SET_BIT(PORTA,Copy_u8Pin);  break;
 			case DIO_u8PORTB : SET_BIT(PORTB,Copy_u8Pin);  break;
+#endif
+#if NUMBER_OF_PORT == THREE_PORT || NUMBER_OF_PORT == FOUR_PORT
 			case DIO_u8PORTC : SET_BIT(PORTC,Copy_u8Pin);  break;
+#endif
+#if NUMBER_OF_PORT == FOUR_PORT
 			case DIO_u8PORTD : SET_BIT(PORTD,Copy_u8Pin);  break;
+#endif
 			default : Local_u8ErrorState=1;
 
 			}
@@ -112,10 +148,16 @@ u8 DIO_u8SetPortValue(u8 Copy_u8Port , u8 Copy_u8PortValue)
 	{
 		switch(Copy_u8Port)
 		{
+#if NUMBER_OF_PORT == TWO_PORT || NUMBER_OF_PORT == THREE_PORT || NUMBER_OF_PORT == FOUR_PORT
 		case DIO_u8PORTA : PORTA=Copy_u8PortValue;     break;
 		case DIO_u8PORTB : PORTB=Copy_u8PortValue;     break;
+#endif
+#if NUMBER_OF_PORT == THREE_PORT || NUMBER_OF_PORT == FOUR_PORT
 		case DIO_u8PORTC : PORTC=Copy_u8PortValue;     break;
+#endif
+#if NUMBER_OF_PORT == FOUR_PORT
 		case DIO_u8PORTD : PORTD=Copy_u8PortValue;     break;
+#endif
 		default :          Local_u8ErrorState=1;       break;
 		}
 	}
@@ -133,10 +175,16 @@ u8 DIO_u8GetPinValue(u8 Copy_u8Port , u8 Copy_u8Pin , u8 * Copy_pu8PinValue)
 	{
 		switch(Copy_u8Port)
 		{
+#if NUMBER_OF_PORT == TWO_PORT || NUMBER_OF_PORT == THREE_PORT || NUMBER_OF_PORT == FOUR_PORT
 		case DIO_u8PORTA : * Copy_pu8PinValue = GET_BIT(PINA,Copy_u8Pin);     break;
 		case DIO_u8PORTB : * Copy_pu8PinValue = GET_BIT(PINB,Copy_u8Pin);     break;
+#endif
+#if NUMBER_OF_PORT == THREE_PORT || NUMBER_OF_PORT == FOUR_PORT
 		case DIO_u8PORTC : * Copy_pu8PinValue = GET_BIT(PINC,Copy_u8Pin);     break;
+#endif
+#if NUMBER_OF_PORT == FOUR_PORT
 		case DIO_u8PORTD : * Copy_pu8PinValue = GET_BIT(PIND,Copy_u8Pin);     break;
+#endif
 		default : Local_u8ErrorState=1;                  break;
 
 		}

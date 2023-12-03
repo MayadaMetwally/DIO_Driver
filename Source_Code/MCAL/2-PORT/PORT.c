@@ -1,0 +1,120 @@
+/*
+ * PORT_Port.c
+
+ *
+ *  Created on: Des 2, 2023
+ *   Author: Mayada Metwally
+ */
+#include"..\..\LIB\STD_TYPES.h"
+#include"DIO.h"
+#include "PORT_Config.h"
+#include "PORT.h"
+
+
+
+#if CONFIG_METHOD == PRE_PROCESSOR
+#if NUMBER_OF_PINS>=16
+/* PORT DIRECTION */
+#define PORTA_DIR  CONCAT(DIR_PIN07,DIR_PIN06,DIR_PIN05,DIR_PIN04,DIR_PIN03,DIR_PIN02,DIR_PIN01,DIR_PIN00)
+#define PORTB_DIR  CONCAT(DIR_PIN15,DIR_PIN14,DIR_PIN13,DIR_PIN12,DIR_PIN11,DIR_PIN10,DIR_PIN09,DIR_PIN08)
+/* PORT VALUE */
+#define PORTA_VALUE  CONCAT(VALUE_PIN07,VALUE_PIN06,VALUE_PIN05,VALUE_PIN04,VALUE_PIN03,VALUE_PIN02,VALUE_PIN01,VALUE_PIN00)
+#define PORTB_VALUE  CONCAT(VALUE_PIN15,VALUE_PIN14,VALUE_PIN13,VALUE_PIN12,VALUE_PIN11,VALUE_PIN10,VALUE_PIN09,VALUE_PIN08)
+#endif
+
+#if NUMBER_OF_PINS>=32
+/* PORT DIRECTION */
+#define PORTC_DIR  CONCAT(DIR_PIN23,DIR_PIN22,DIR_PIN21,DIR_PIN20,DIR_PIN19,DIR_PIN18,DIR_PIN17,DIR_PIN16)
+#define PORTD_DIR  CONCAT(DIR_PIN31,DIR_PIN30,DIR_PIN29,DIR_PIN28,DIR_PIN27,DIR_PIN26,DIR_PIN25,DIR_PIN24)
+/* PORT VALUE */
+#define PORTC_VALUE  CONCAT(VALUE_PIN23,VALUE_PIN22,VALUE_PIN21,VALUE_PIN20,VALUE_PIN19,VALUE_PIN18,VALUE_PIN17,VALUE_PIN16)
+#define PORTD_VALUE  CONCAT(VALUE_PIN31,VALUE_PIN30,VALUE_PIN29,VALUE_PIN28,VALUE_PIN27,VALUE_PIN26,VALUE_PIN25,VALUE_PIN24)
+#endif
+
+#if NUMBER_OF_PINS>=48
+/* PORT DIRECTION */
+#define PORTE_DIR  CONCAT(DIR_PIN39,DIR_PIN38,DIR_PIN37,DIR_PIN36,DIR_PIN35,DIR_PIN34,DIR_PIN33,DIR_PIN32)
+#define PORTF_DIR  CONCAT(DIR_PIN47,DIR_PIN46,DIR_PIN45,DIR_PIN44,DIR_PIN43,DIR_PIN42,DIR_PIN41,DIR_PIN40)
+/* PORT VALUE */
+#define PORTE_VALUE  CONCAT(VALUE_PIN39,VALUE_PIN38,VALUE_PIN37,VALUE_PIN36,VALUE_PIN35,VALUE_PIN34,VALUE_PIN33,VALUE_PIN32)
+#define PORTF_VALUE  CONCAT(VALUE_PIN47,VALUE_PIN46,VALUE_PIN45,VALUE_PIN44,VALUE_PIN43,VALUE_PIN42,VALUE_PIN41,VALUE_PIN40)
+#endif
+
+
+
+
+void PortInitPreProcessor(void)
+{
+#if NUMBER_OF_PINS>=16
+	DDRA = PORTA_DIR;
+	DDRB = PORTB_DIR;
+	PORTA = PORTA_VALUE;
+	PORTB = PORTB_VALUE;
+#endif
+
+#if NUMBER_OF_PINS>=32
+	DDRC = PORTC_DIR;
+	DDRD = PORTD_DIR;
+	PORTC = PORTC_VALUE;
+	PORTD =PORTD_VALUE;
+
+#endif
+#if NUMBER_OF_PINS>=48
+	DDRE =  PORTE_DIR;
+	DDRF =  PORTF_DIR;
+	PORTE = PORTE_DIR;
+	PORTF = PORTF_DIR;
+#endif
+
+}
+#endif
+
+#if CONFIG_METHOD == POST_COMPILE
+extern tstr_PinConfig PinsConfig[NUMBER_OF_PINS];
+tenu_ErrorStatus PortInitPostCompiler()
+{
+u8 Local_u8Error=0;
+
+tenu_ErrorStatus Local_u8Counter= LBTY_OK;
+u8 Local_u8Pin=0;
+u8 Local_u8Port=0;
+
+
+for(Local_u8Counter=0;Local_u8Counter<NUMBER_OF_PINS;Local_u8Counter++)
+{
+	/*Sorting Pin number */
+	Local_u8Pin=(PinsConfig[Local_u8Counter].tenu_Pin)%8;
+	/*Sorting Port Number*/
+	Local_u8Port=(PinsConfig[Local_u8Counter].tenu_Pin)/8;
+	if(PinsConfig[Local_u8Counter].tenu_Dir==OUTPUT)
+	{
+		/* Define Pin as output */
+		DIO_u8SetPinDirection(Local_u8Pin,Local_u8Port,DIO_u8PIN_OUTPUT);
+
+	}
+	else if(PinsConfig[Local_u8Counter].tenu_Dir==INPUT)
+		{
+		/* Define Pin as input */
+		DIO_u8SetPinDirection(Local_u8Port,Local_u8Pin,DIO_u8PIN_INPUT);
+		}
+
+	else
+	{
+		/* Error configuration (Not INPUT or Output) */
+		Local_u8Error=LBTY_NOK;
+	}
+	/* End of IF (Checking in direction) */
+
+	/* Set pin of value using init value from pins config array (HIGH or Low) */
+	DIO_u8SetPinValue(Local_u8Port,Local_u8Pin,PinsConfig[Local_u8Counter].tenu_Value);
+
+}
+
+
+
+
+return Local_u8Error;
+
+}
+
+#endif

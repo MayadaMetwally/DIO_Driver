@@ -1,6 +1,6 @@
 # DIO module Readme
 
-This readme file provides an overview and usage instructions for the DIO (Digital Input/Output) module. The DIO module consists of three files: `DIO.h`, `DIO.c`, and `App`. Additionally, the DIO module relies on two supporting files: `bitmath.h` and `std-types.h`. Below, you will find information about each file, including its purpose and the functions it contains.
+This readme file provides an overview and usage instructions for the DIO (Digital Input/Output) module. The DIO module consists of three files: `DIO.h`, `DIO.c`, and `App`. Additionally, the DIO module relies on two supporting files: `bitmath.h` and `std-types.h`. It also includes a `delay_ms` function for introducing delays in your code. Below, you will find information about the driver's files, functions, and usage Below, you will find information about each file, including its purpose and the functions it contains.
 
 ## Files Description
 
@@ -61,6 +61,12 @@ This function is used to retrieve the value of a specific pin on a given port. I
 - `Copy_u8Pin`: The pin number whose value will be retrieved.
 - `Copy_pu8PinValue`: A pointer to a variable where the pin value will be stored.
 
+### 6. `void DIO_DelayMs(uint32_t TimeMs)`
+
+This function introduces a delay in milliseconds using the `NOP` instruction. It can be used to pause the execution of your code for a specific duration.
+
+- `TimeMs`: The delay duration in milliseconds.
+
 ## Usage
 
 To use the DIO module in your application, follow these steps:
@@ -68,6 +74,10 @@ To use the DIO module in your application, follow these steps:
 1. Include the `DIO.h` header file in your source file.
 2. Implement the necessary hardware-specific code to initialize the ports andpins used by the DIO module.
 3. Call the DIO module functions as needed to perform your desired operations on the ports and pins.
+4. Utilize the `DIO_DelayMs` function to introduce delays in your code. For example, to introduce a 500 ms delay, use the following code:
+
+   `c
+   DIO_DelayMs(500);
 
 Refer to the provided `task1.c` and `task2.c` files in the `App` directory for example usages of the DIO module. Modify the code according to your hardware configuration and requirements.
 

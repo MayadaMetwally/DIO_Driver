@@ -1,16 +1,32 @@
 # DIO Module Readme
 
-This readme file provides an overview and usage instructions for the DIO (Digital Input/Output) module. The DIO module consists of three files: `DIO.h`, `DIO.c`, and `App`. Additionally, the DIO module relies on two supporting files: `bitmath.h` and `std-types.h`. It also includes a `delay_ms` function for introducing delays in your code. Below, you will find information about the driver's files, functions, and usage Below, you will find information about each file, including its purpose and the functions it contains.
+This README file provides an overview and usage instructions for the DIO (Digital Input/Output) module, which includes the DIO driver and the Port driver. The DIO module allows you to control digital input and output operations on specific pins and ports of your microcontroller. It also includes example task files that demonstrate different applications using the DIO driver. Below, you will find information about the module's files, functions, and usage.
 
 ## Files Description
 
-### 1. DIO.h
+## Files Description
 
-The `DIO.h` file contains all the necessary function prototypes, constants, and definitions required for using the DIO module. It serves as the header file for the DIO module, providing an interface for users to access the module's functionality. This file also includes the necessary `bitmath.h` and `std-types.h` files.
+The DIO module consists of the following files:
 
-### 2. DIO.c
+### DIO Driver:
 
-The `DIO.c` file contains the implementation of the DIO module's functions. It includes the logic and code required to perform various operations such as setting pin directions, setting pin values, and retrieving pin values. This file serves as the main implementation file for the DIO module. It also includes the necessary `bitmath.h` and `std-types.h` files.
+- `DIO.c`: This source file contains the implementation of the DIO driver's functions. It includes the logic and code required to perform various operations such as setting pin directions, setting pin values, and retrieving pin values.
+
+- `DIO.h`: This header file contains function prototypes and definitions required for using the DIO driver. It serves as the interface for accessing the driver's functionality.
+
+- `DIO_Config.c`: This source file contains the implementation of the DIO driver's configuration functions. It includes the code for configuring the behavior of the DIO driver based on the specified configuration method.
+
+- `DIO_Config.h`: This header file contains the configuration parameters for the DIO driver. It allows you to define the number of ports and pins and choose the configuration method (pre-processor or post-compile).
+
+### Port Driver:
+
+- `PORT.c`: This source file contains the implementation of the Port driver's functions. It includes the logic and code required to configure the microcontroller's ports and pins based on the specified configuration.
+
+- `PORT.h`: This header file contains function prototypes and definitions required for using the Port driver. It serves as the interface for accessing the driver's functionality.
+
+- `PORT_Config.c`: This source file contains the implementation of the port configuration functions. It includes the code for configuring the microcontroller's ports and pins based on the specified configuration method.
+
+- `PORT_Config.h`: This header file contains the configuration parameters for the Port driver. It allows you to define the number of ports and pins and choose the configuration method (pre-processor or post-compile).
 
 ### 3. App
 
@@ -69,20 +85,43 @@ This function introduces a delay in milliseconds using the `NOP` instruction. It
 
 ## Usage
 
-To use the DIO module in your application, follow these steps:
+To use the DIO module in your project, follow these steps:
 
-1. Include the `DIO.h` header file in your source file.
-2. Implement the necessary hardware-specific code to initialize the ports andpins used by the DIO module.
-3. Call the DIO module functions as needed to perform your desired operations on the ports and pins.
-4. Utilize the `DIO_DelayMs` function to introduce delays in your code. For example, to introduce a 500 ms delay, use the following code:
+1. Include the necessary header files in your source file:
 
    `c
-   DIO_DelayMs(500);
+   #include "DIO.h"
+   #include "PORT.h"
+   
 
-Refer to the provided `task1.c` and `task2.c` files in the `App` directory for example usages of the DIO module. Modify the code according to your hardware configuration and requirements.
+2. Configure the DIO driver by modifying the `DIO_Config.h` file. Specify the number of ports and pins according to your microcontroller's specifications. Choose the configuration method (`DIO_PREPROCESSOR_CONFIG` or `DIO_POSTCOMPILE_CONFIG`) that suits your needs.
+
+3. Implement the required initialization functions:
+
+   - If you are using the pre-processor configuration method, implement the `DIO_InitPreProcessor()` function in `DIO_Config.c` to initialize the DIO driver.
+
+   - If you are using the post-compile configuration method, implement the `DIO_InitPostCompiler()` function in `DIO_Config.c` to initialize the DIO driver. This function should return an `ErrorStatus` value indicating the success or failure of the initialization.
+
+4. Implement the required initialization functions for the Port driver:
+
+   - Implement the `PortInitPreProcessor()` function in `PORT.c` to initialize the ports and pins if you are using the pre-processor configuration method.
+
+   - Implement the `PortInitPostCompiler()` function in `PORT.c` to initialize the ports and pins if you are using the post-compile configuration method. This function should return an `ErrorStatus` value indicating the success or failure of the initialization.
+
+5. Build and compile your project.
+
+6. Utilize the DIO and Port driver functions to perform digital input/output operations on the desired pins and ports. Refer to the function descriptions and examples in the respective header and source files for guidance.
+
+7. To run the example tasks, include the appropriate task file in your project and build it. Upload the compiled code to your microcontroller and observe the behavior described in the respective task's description.
+
+Please refer to the provided examples and modify the code according to your specific hardwareconfiguration and requirements.
 
 Note: Make sure to configure the microcontroller's ports and pins before using the DIO module functions to ensure proper operation.
 
 ## Conclusion
 
 The DIO module provides a convenient interface for controlling digital input/output operations on microcontroller ports and pins. By using the provided functions, you can easily set pin directions, set pin values, retrieve pin values, and control entire port directions and values. The example tasks in the `App` directory demonstrate how to use the DIO module for basic LED toggling and more advanced applications involving switches and LEDs.
+
+
+We hope you find the DIO module and Port driver useful for your project. Happy coding
+

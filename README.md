@@ -1,4 +1,4 @@
-# DIO Module README
+# DIO Module Readme
 
 This README file provides an overview and usage instructions for the DIO (Digital Input/Output) module, which includes the DIO driver and the Port driver. The DIO module allows you to control digital input and output operations on specific pins and ports of your microcontroller. It also includes example task files that demonstrate different applications using the DIO driver. Below, you will find information about the module's files, functions, and usage.
 
@@ -122,4 +122,6 @@ Note: Make sure to configure the microcontroller's ports and pins before using t
 
 The DIO module provides a convenient interface for controlling digital input/output operations on microcontroller ports and pins. By using the provided functions, you can easily set pin directions, set pin values, retrieve pin values, and control entire port directions and values. The example tasks in the `App` directory demonstrate how to use the DIO module for basic LED toggling and more advanced applications involving switches and LEDs.
 
+
 We hope you find the DIO module and Port driver useful for your project. Happy coding
+

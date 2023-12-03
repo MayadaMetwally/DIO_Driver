@@ -4,8 +4,6 @@ This README file provides an overview and usage instructions for the DIO (Digita
 
 ## Files Description
 
-## Files Description
-
 The DIO module consists of the following files:
 
 ### DIO Driver:
